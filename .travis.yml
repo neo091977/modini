@@ -14,7 +14,10 @@ script:
   - GOOS=darwin  GOARCH=amd64 go build -o bin/modini-darwin    -ldflags "-X main.version=$VERSION"
   - GOOS=windows GOARCH=386   go build -o bin/modini.exe       -ldflags "-X main.version=$VERSION"
   - GOOS=windows GOARCH=amd64 go build -o bin/modini-amd64.exe -ldflags "-X main.version=$VERSION"
-  - ls -la bin
+  - cd bin
+  - sha256sum modini* | tee SHA256SUMS
+  - file modini*
+  - ls -l --human-readable
 deploy:
   provider: releases
   skip_cleanup: true
@@ -28,5 +31,6 @@ deploy:
     - bin/modini-darwin
     - bin/modini.exe
     - bin/modini-amd64.exe
+    - bin/SHA256SUMS
   on:
     tags: true
