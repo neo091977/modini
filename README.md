@@ -1,6 +1,8 @@
 # modini
 Modify ini files from the command line
 
+[![Build Status](https://travis-ci.org/reflectivecode/modini.svg?branch=master)](https://travis-ci.org/reflectivecode/modini)
+
 ## Example
 ```
 modini --input input.ini --output output.ini --modify "[Section1];Prop2=frog;Prop3=bear;PropList+=shark;PropList-=trout;[Section2];New=unicorn"
