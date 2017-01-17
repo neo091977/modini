@@ -12,7 +12,7 @@ script:
   - GOOS=linux   GOARCH=arm   go build -o bin/modini-arm       -ldflags "-s -w -X main.version=$VERSION"
   - GOOS=linux   GOARCH=arm64 go build -o bin/modini-arm64     -ldflags "-s -w -X main.version=$VERSION"
   - GOOS=darwin  GOARCH=amd64 go build -o bin/modini-darwin    -ldflags "-s -w -X main.version=$VERSION"
-  - GOOS=windows GOARCH=386   go build -o bin/modini.exe       -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=windows GOARCH=386   go build -o bin/modini-386.exe   -ldflags "-s -w -X main.version=$VERSION"
   - GOOS=windows GOARCH=amd64 go build -o bin/modini-amd64.exe -ldflags "-s -w -X main.version=$VERSION"
   - pushd bin
   - sha256sum modini* | tee SHA256SUMS
@@ -30,7 +30,7 @@ deploy:
     - bin/modini-arm
     - bin/modini-arm64
     - bin/modini-darwin
-    - bin/modini.exe
+    - bin/modini-386.exe
     - bin/modini-amd64.exe
     - bin/SHA256SUMS
   on:
