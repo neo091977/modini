@@ -5,7 +5,7 @@ Modify ini files from the command line
 
 ## Example
 ```
-modini --input input.ini --output output.ini --modify "[Section1];Prop2=frog;Prop3=bear;PropList+=shark;PropList-=trout;[Section2];New=unicorn"
+modini -input input.ini -output output.ini -modify "[Section1];Prop2=frog;Prop3=bear;PropList+=shark;PropList-=trout;[Section2];New=unicorn"
 
 === input.ini ===
 [Section1]
@@ -39,12 +39,14 @@ go test
 usage: modini --input=INPUT [<flags>]
 
 Flags:
-      --help         Show context-sensitive help (also try --help-long and
-                     --help-man).
-  -i, --input=INPUT  Path to input ini file.
-  -o, --output=""    Path to output ini file.
-  -d, --delimit=";"  Split the mod string on this value.
-  -m, --modify=""    Modifications to make. ex:
-                     [section1];prop1=value1;prop2=value2;[section2];prop1=value3.
-      --version      Show application version.
+  -delimit string
+        (optional) Split the modify string on this value. (default ";")
+  -input string
+        (required) Path to input ini file.
+  -modify string
+        (optional) Modifications to make. ex: [section1];prop1=value1;prop2=value2;[section2];prop1=value3.
+  -output string
+        (optional) Path to output ini file.
+  -version
+        output the version
 ```
