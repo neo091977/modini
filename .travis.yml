@@ -7,13 +7,13 @@ script:
   - go test -v
   - VERSION="$(git describe --tags --match v* --always)"
   - echo $VERSION
-  - GOOS=linux   GOARCH=386   go build -o bin/modini-386       -ldflags "-X main.version=$VERSION"
-  - GOOS=linux   GOARCH=amd64 go build -o bin/modini-amd64     -ldflags "-X main.version=$VERSION"
-  - GOOS=linux   GOARCH=arm   go build -o bin/modini-arm       -ldflags "-X main.version=$VERSION"
-  - GOOS=linux   GOARCH=arm64 go build -o bin/modini-arm64     -ldflags "-X main.version=$VERSION"
-  - GOOS=darwin  GOARCH=amd64 go build -o bin/modini-darwin    -ldflags "-X main.version=$VERSION"
-  - GOOS=windows GOARCH=386   go build -o bin/modini.exe       -ldflags "-X main.version=$VERSION"
-  - GOOS=windows GOARCH=amd64 go build -o bin/modini-amd64.exe -ldflags "-X main.version=$VERSION"
+  - GOOS=linux   GOARCH=386   go build -o bin/modini-386       -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=linux   GOARCH=amd64 go build -o bin/modini-amd64     -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=linux   GOARCH=arm   go build -o bin/modini-arm       -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=linux   GOARCH=arm64 go build -o bin/modini-arm64     -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=darwin  GOARCH=amd64 go build -o bin/modini-darwin    -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=windows GOARCH=386   go build -o bin/modini.exe       -ldflags "-s -w -X main.version=$VERSION"
+  - GOOS=windows GOARCH=amd64 go build -o bin/modini-amd64.exe -ldflags "-s -w -X main.version=$VERSION"
   - cd bin
   - sha256sum modini* | tee SHA256SUMS
   - file modini*
