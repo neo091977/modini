@@ -5,7 +5,7 @@ env:
     - $BUILD_FLAGS=-ldflags "-X main.version=$VERSION"
 script:
   - go test -v
-  - VERSION="$(git describe --always)"
+  - VERSION="$(git describe --tags --match v* --always)"
   - echo $VERSION
   - GOOS=linux   GOARCH=386   go build -o bin/modini           -ldflags "-X main.version=$VERSION"
   - GOOS=linux   GOARCH=amd64 go build -o bin/modini-amd64     -ldflags "-X main.version=$VERSION"
