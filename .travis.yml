@@ -1,4 +1,8 @@
 language: go
+addons:
+  apt:
+    packages:
+    - upx
 env:
   global:
     - CGO_ENABLED=0
@@ -15,6 +19,7 @@ script:
   - GOOS=windows GOARCH=386   go build -o bin/modini-386.exe   -ldflags "-s -w -X main.version=$VERSION"
   - GOOS=windows GOARCH=amd64 go build -o bin/modini-amd64.exe -ldflags "-s -w -X main.version=$VERSION"
   - pushd bin
+  - find . -name "modini*" -exec upx -q --brute {} \;
   - sha256sum modini* | tee SHA256SUMS
   - file modini*
   - ls -l --human-readable
