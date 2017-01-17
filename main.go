@@ -16,8 +16,10 @@ var (
 	modify    = kingpin.Flag("modify", "Modifications to make. ex: [section1];prop1=value1;prop2=value2;[section2];prop1=value3.").Default("").Short('m').String()
 )
 
+var version string
+
 func main() {
-	kingpin.UsageTemplate(kingpin.CompactUsageTemplate).Version("1.0").Author("Greg Todd")
+	kingpin.UsageTemplate(kingpin.CompactUsageTemplate).Version(version).Author("Greg Todd")
 	kingpin.Parse()
 
 	inputLines := readFile(*inFile)
