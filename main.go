@@ -11,10 +11,10 @@ import (
 var version string
 
 func main() {
-	inFile := flag.String("input", "", "(required) Path to input ini file.")
-	outFile := flag.String("output", "", "(optional) Path to output ini file.")
-	delimiter := flag.String("delimit", ";", "(optional) Split the modify string on this value.")
-	modify := flag.String("modify", "", "(optional) Modifications to make. ex: [section1];prop1=value1;prop2=value2;[section2];prop1=value3.")
+	inFile := flag.String("input", "", "Path to input ini file.")
+	outFile := flag.String("output", "", "Path to output ini file.")
+	delimiter := flag.String("delimit", ";", "Split the modify string on this value.")
+	modify := flag.String("modify", "", "Modifications to make. ex: [section1];prop1=value1;prop2=value2;[section2];prop1=value3.")
 	showVersion := flag.Bool("version", false, "output the version")
 
 	flag.Parse()
@@ -24,16 +24,23 @@ func main() {
 		return
 	}
 
-	if *inFile == "" {
-		log.Fatal("argument --input is required")
+	if *inFile == "" && *modify == "" {
+		fmt.Fprintf(os.Stderr, "arguments -input and/or -modify are required\n\n")
+		flag.PrintDefaults()
+		os.Exit(1)
 	}
 
-	inputLines := readFile(*inFile)
-	modifyLines := strings.Split(*modify, *delimiter)
-
 	file := newFile()
-	file.merge(inputLines, true)
-	file.merge(modifyLines, false)
+
+	if *inFile != "" {
+		inputLines := readFile(*inFile)
+		file.merge(inputLines, true)
+	}
+
+	if *modify != "" {
+		modifyLines := strings.Split(*modify, *delimiter)
+		file.merge(modifyLines, false)
+	}
 
 	output := strings.Join(file.render(), "\n")
 
