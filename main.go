@@ -4,7 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"io/ioutil"
-	"log"
+	"os"
 	"strings"
 )
 
@@ -54,7 +54,8 @@ func main() {
 func readFile(filename string) []string {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
+		os.Exit(2)
 	}
 	return strings.Split(string(content), "\n")
 }
@@ -62,6 +63,7 @@ func readFile(filename string) []string {
 func writeFile(filename string, contents string) {
 	err := ioutil.WriteFile(filename, []byte(contents), 0644)
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintf(os.Stderr, "error writing file: %v\n", err)
+		os.Exit(3)
 	}
 }
