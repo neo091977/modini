@@ -15,6 +15,7 @@ func main() {
 	outFile := flag.String("output", "", "Path to output ini file.")
 	delimiter := flag.String("delimit", ";", "Split the modify string on this value.")
 	modify := flag.String("modify", "", "Modifications to make. ex: [section1];prop1=value1;prop2=value2;[section2];prop1=value3.")
+	newline := flag.String("newline", "\n", "Output uses this line ending.")
 	showVersion := flag.Bool("version", false, "output the version")
 
 	flag.Parse()
@@ -42,12 +43,12 @@ func main() {
 		file.merge(modifyLines, false)
 	}
 
-	output := strings.Join(file.render(), "\n")
+	output := strings.Join(file.render(), *newline) + *newline
 
 	if *outFile == "" {
-		fmt.Println(output)
+		fmt.Printf(output)
 	} else {
-		writeFile(*outFile, output+"\n")
+		writeFile(*outFile, output)
 	}
 }
 
