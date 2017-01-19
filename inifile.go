@@ -40,7 +40,7 @@ func (file *iniFile) allSections() []*iniSection {
 
 var emptyRegex = regexp.MustCompile(`^\s*$`)
 var sectionRegex = regexp.MustCompile(`^\[([^\[\]]+)\]\s*$`)
-var propertyRegex = regexp.MustCompile(`^(\w[^=]+?)(=|\+=|\-=)(.*?)\s*$`)
+var propertyRegex = regexp.MustCompile(`^(\w[^=]*?)(=|\+=|\-=)(.*?)\s*$`)
 
 func (file *iniFile) merge(lines []string, isFile bool) {
 	var currentSection *iniSection

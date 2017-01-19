@@ -18,6 +18,7 @@ func TestRenderOrder(t *testing.T) {
 		"",
 		"[My.Section]",
 		"Other=yes",
+		"a=b",
 	}
 
 	expected := []string{
@@ -25,6 +26,7 @@ func TestRenderOrder(t *testing.T) {
 		"Prop=value",
 		"Prop=this is a test",
 		"Other=yes",
+		"a=b",
 		"",
 		"[Other.Section]",
 		"Thing2=b",
@@ -53,6 +55,9 @@ func TestSkipsGarbage(t *testing.T) {
 		"Thing2=b",
 		"Thing1=a",
 		"garbage4",
+		"=a",
+		"[begin",
+		"end]",
 	}
 
 	expected := []string{
