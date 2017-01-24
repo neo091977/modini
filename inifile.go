@@ -42,10 +42,13 @@ var emptyRegex = regexp.MustCompile(`^\s*$`)
 var sectionRegex = regexp.MustCompile(`^\[([^\[\]]+)\]\s*$`)
 var propertyRegex = regexp.MustCompile(`^(\w[^=]*?)(=|\+=|\-=)(.*?)\s*$`)
 
-func (file *iniFile) merge(lines []string, isFile bool) {
+func (file *iniFile) merge(channel <-chan string, isFile bool) {
 	var currentSection *iniSection
 
-	for i, line := range lines {
+	i := 0
+	for line := range channel {
+		i++
+
 		if emptyRegex.MatchString(line) {
 			continue
 		}
@@ -82,7 +85,7 @@ func (file *iniFile) merge(lines []string, isFile bool) {
 			}
 		}
 
-		fmt.Fprintf(os.Stderr, "skipping line #%v: %v\n", i+1, line)
+		fmt.Fprintf(os.Stderr, "skipping line #%v: %v\n", i, line)
 	}
 }
 

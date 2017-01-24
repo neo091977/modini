@@ -34,13 +34,15 @@ func main() {
 	file := newFile()
 
 	if *inFile != "" {
-		inputLines := readFile(*inFile)
-		file.merge(inputLines, true)
+		channel := make(chan string)
+		go readFile(channel, *inFile)
+		file.merge(channel, true)
 	}
 
 	if *modify != "" {
-		modifyLines := strings.Split(*modify, *delimiter)
-		file.merge(modifyLines, false)
+		channel := make(chan string)
+		go readModify(channel, *modify, *delimiter)
+		file.merge(channel, false)
 	}
 
 	output := strings.Join(file.render(), *newline) + *newline
@@ -52,13 +54,23 @@ func main() {
 	}
 }
 
-func readFile(filename string) []string {
+func readFile(channel chan<- string, filename string) {
 	content, err := ioutil.ReadFile(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error reading file: %v\n", err)
 		os.Exit(2)
 	}
-	return strings.Split(string(content), "\n")
+	for _, line := range strings.Split(string(content), "\n") {
+		channel <- line
+	}
+	close(channel)
+}
+
+func readModify(channel chan<- string, modify string, delimiter string) {
+	for _, line := range strings.Split(modify, delimiter) {
+		channel <- line
+	}
+	close(channel)
 }
 
 func writeFile(filename string, contents string) {
