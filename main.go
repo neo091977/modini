@@ -67,8 +67,10 @@ func readFile(channel chan<- string, filename string) {
 }
 
 func readModify(channel chan<- string, modify string, delimiter string) {
-	for _, line := range strings.Split(modify, delimiter) {
-		channel <- line
+	for _, line := range strings.Split(modify, "\n") {
+		for _, line := range strings.Split(line, delimiter) {
+			channel <- line
+		}
 	}
 	close(channel)
 }
