@@ -132,6 +132,55 @@ func TestMergesCorrectly(t *testing.T) {
 	}
 }
 
+func TestNoDuplicatesFromInput(t *testing.T) {
+	input := sliceToChannel([]string{
+		"[My.Section]",
+		"Prop=value",
+		"Prop=value",
+	})
+
+	expected := []string{
+		"[My.Section]",
+		"Prop=value",
+	}
+
+	file := newFile()
+	file.merge(input, true)
+	actual := file.render()
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf(`Output not as expected. Actual: %v`, actual)
+	}
+}
+
+func TestNoDuplicatesFromModify(t *testing.T) {
+	input1 := sliceToChannel([]string{
+		"[My.Section]",
+		"Prop=value",
+		"Prop=b",
+	})
+
+	input2 := sliceToChannel([]string{
+		"[My.Section]",
+		"Prop+=value",
+	})
+
+	expected := []string{
+		"[My.Section]",
+		"Prop=value",
+		"Prop=b",
+	}
+
+	file := newFile()
+	file.merge(input1, true)
+	file.merge(input2, false)
+	actual := file.render()
+
+	if !reflect.DeepEqual(actual, expected) {
+		t.Errorf(`Output not as expected. Actual: %v`, actual)
+	}
+}
+
 func sliceToChannel(list []string) <-chan string {
 	channel := make(chan string)
 	go sliceToChannelHelper(channel, list)
